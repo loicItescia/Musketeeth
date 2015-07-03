@@ -6,9 +6,19 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
+import android.widget.ArrayAdapter;
+
+import org.w3c.dom.Comment;
+
+import java.util.List;
+import java.util.Random;
+
+import fr.lemeut.loic.musketeeth.sql.ScoreLavage;
+import  fr.lemeut.loic.musketeeth.sql.ScoreLavageDataSource;
 
 /**
  * Created by Loic on 03/07/2015.
@@ -16,7 +26,7 @@ import android.widget.TextView;
 public class LavageEndStatsActivity extends Activity {
     private TextView viewTempsLavage, viewSCORE_DEVANT_VERTICAL, viewSCORE_DESSUS_BAS_HORIZONTALE,  viewSCORE_DESSOUS_HAUT_HORIZONTALE,
             viewSCORE_DERRIERE_HAUT, viewSCORE_DERRIERE_BAS, viewSCORE_NOTHING, viewScoreFinal;
-    private Button buttonShare;
+    private Button buttonShare, buttonDeleteBDD;
     String messageTempsLavage = "";
     private float TempsLavage = 0;
     private String SCORE_DEVANT_VERTICAL;
@@ -25,7 +35,8 @@ public class LavageEndStatsActivity extends Activity {
     private String SCORE_DERRIERE_HAUT;
     private String SCORE_DERRIERE_BAS;
     private String SCORE_NOTHING;
-
+    private ScoreLavageDataSource datasource;
+    private ScoreLavage comment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,11 +44,12 @@ public class LavageEndStatsActivity extends Activity {
         setContentView(R.layout.lavage_end_stats);
         Bundle myIntent = getIntent().getExtras(); // gets the previously created intent
         GestionScore scoreFinal = null;
+
         // Gestion des TextView
         gestionTextView();
         gestionButton();
 
-
+        // Récupération des données de l'Intent
         if(myIntent != null){
             scoreFinal = new GestionScore(myIntent);
             messageTempsLavage = Float.toString((float)myIntent.get("tempsLavage"));
@@ -52,6 +64,7 @@ public class LavageEndStatsActivity extends Activity {
             messageTempsLavage = "ERR";
         }
 
+        // Affichage des score a l'ecran
         viewTempsLavage.setText(messageTempsLavage+" s");
         viewSCORE_DEVANT_VERTICAL.setText(SCORE_DEVANT_VERTICAL+" s");
         viewSCORE_DESSUS_BAS_HORIZONTALE.setText(SCORE_DESSUS_BAS_HORIZONTALE+" s");
@@ -62,10 +75,25 @@ public class LavageEndStatsActivity extends Activity {
         viewScoreFinal.setText(Integer.toString(scoreFinal.getScoreFinal()));
 
 
+        // Sauvegarde du score en BDD
+        datasource = new ScoreLavageDataSource(this);
+        datasource.open();
+        comment = datasource.createComment(Integer.toString(scoreFinal.getScoreFinal()));
 
-    /*
-     * Partager sur Twitter
-     */
+
+        // Partager sur Twitter
+        buttonDeleteBDD.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                List<ScoreLavage> values = datasource.getAllComments();
+                int size = values.size();
+                for (ScoreLavage i : values) {
+                    datasource.deleteComment(i);
+                }
+            }
+        });
+
+        // Partager sur Twitter
         buttonShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -82,6 +110,7 @@ public class LavageEndStatsActivity extends Activity {
 
     private void gestionButton() {
         buttonShare = (Button) findViewById(R.id.button3);
+        buttonDeleteBDD = (Button) findViewById(R.id.button5);
     }
 
     private void gestionTextView() {
@@ -94,4 +123,19 @@ public class LavageEndStatsActivity extends Activity {
         viewSCORE_NOTHING  = (TextView) findViewById(R.id.textView20);
         viewScoreFinal  = (TextView) findViewById(R.id.textView21);
     }
+
+
+
+    @Override
+    protected void onResume() {
+        datasource.open();
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        datasource.close();
+        super.onPause();
+    }
+
 }

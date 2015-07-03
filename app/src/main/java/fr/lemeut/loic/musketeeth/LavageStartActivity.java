@@ -87,6 +87,7 @@ public class LavageStartActivity extends Activity implements SensorEventListener
                 goToNextActivty.putExtra("SCORE_DERRIERE_HAUT", SCORE_DERRIERE_HAUT);
                 goToNextActivty.putExtra("SCORE_DERRIERE_BAS", SCORE_DERRIERE_BAS);
                 goToNextActivty.putExtra("SCORE_NOTHING", SCORE_NOTHING);
+                finish(); // Supprime l'activité en cours, pour éviter de revenir dessus avec un back.
                 _context.startActivity(goToNextActivty);
             }
         });
