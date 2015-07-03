@@ -15,7 +15,7 @@ import android.widget.TextView;
  */
 public class LavageEndStatsActivity extends Activity {
     private TextView viewTempsLavage, viewSCORE_DEVANT_VERTICAL, viewSCORE_DESSUS_BAS_HORIZONTALE,  viewSCORE_DESSOUS_HAUT_HORIZONTALE,
-            viewSCORE_DERRIERE_HAUT, viewSCORE_DERRIERE_BAS, viewSCORE_NOTHING;
+            viewSCORE_DERRIERE_HAUT, viewSCORE_DERRIERE_BAS, viewSCORE_NOTHING, viewScoreFinal;
     private Button buttonShare;
     String messageTempsLavage = "";
     private float TempsLavage = 0;
@@ -32,13 +32,14 @@ public class LavageEndStatsActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.lavage_end_stats);
         Bundle myIntent = getIntent().getExtras(); // gets the previously created intent
-
+        GestionScore scoreFinal = null;
         // Gestion des TextView
         gestionTextView();
         gestionButton();
 
 
         if(myIntent != null){
+            scoreFinal = new GestionScore(myIntent);
             messageTempsLavage = Float.toString((float)myIntent.get("tempsLavage"));
             SCORE_DEVANT_VERTICAL =  Float.toString((float)myIntent.get("SCORE_DEVANT_VERTICAL")/1000);
             SCORE_DESSUS_BAS_HORIZONTALE =  Float.toString((float)myIntent.get("SCORE_DESSUS_BAS_HORIZONTALE")/1000);
@@ -58,6 +59,7 @@ public class LavageEndStatsActivity extends Activity {
         viewSCORE_DERRIERE_HAUT.setText(SCORE_DERRIERE_HAUT+" s");
         viewSCORE_DERRIERE_BAS.setText(SCORE_DERRIERE_BAS+" s");
         viewSCORE_NOTHING.setText(SCORE_NOTHING+" s");
+        viewScoreFinal.setText(Integer.toString(scoreFinal.getScoreFinal()));
 
 
 
@@ -90,5 +92,6 @@ public class LavageEndStatsActivity extends Activity {
         viewSCORE_DERRIERE_HAUT  = (TextView) findViewById(R.id.textView18);
         viewSCORE_DERRIERE_BAS  = (TextView) findViewById(R.id.textView19);
         viewSCORE_NOTHING  = (TextView) findViewById(R.id.textView20);
+        viewScoreFinal  = (TextView) findViewById(R.id.textView21);
     }
 }
