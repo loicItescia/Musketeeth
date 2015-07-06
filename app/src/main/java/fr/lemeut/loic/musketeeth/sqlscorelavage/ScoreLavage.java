@@ -1,4 +1,4 @@
-package fr.lemeut.loic.musketeeth.sql;
+package fr.lemeut.loic.musketeeth.sqlscorelavage;
 
 /**
  * Created by Loic on 03/07/2015.
@@ -6,7 +6,7 @@ package fr.lemeut.loic.musketeeth.sql;
 public class ScoreLavage {
     private long id;
     private String score;
-    private String ts_dateScore; // Timestamp
+    private String ts_dateScore;
 
     public long getId() {
         return id;

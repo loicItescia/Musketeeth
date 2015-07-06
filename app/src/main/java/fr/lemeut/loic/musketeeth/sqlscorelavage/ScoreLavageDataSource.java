@@ -1,4 +1,4 @@
-package fr.lemeut.loic.musketeeth.sql;
+package fr.lemeut.loic.musketeeth.sqlscorelavage;
 
 /**
  * Created by Loic on 03/07/2015.
@@ -12,12 +12,14 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import fr.lemeut.loic.musketeeth.sql.MySQLiteHelper;
+
 public class ScoreLavageDataSource {
 
     // Champs de la base de donnees
     private SQLiteDatabase database;
     private MySQLiteHelper dbHelper;
-    private String[] allColumns = { MySQLiteHelper.COLUMN_ID, MySQLiteHelper.COLUMN_COMMENT, MySQLiteHelper.COLUMN_DATESCORE };
+    private String[] allColumns = { MySQLiteHelper.COLUMN_ID, MySQLiteHelper.COLUMN_SCORE, MySQLiteHelper.COLUMN_DATESCORE };
 
     public ScoreLavageDataSource(Context context) {
         dbHelper = new MySQLiteHelper(context);
@@ -33,10 +35,10 @@ public class ScoreLavageDataSource {
 
     public ScoreLavage createComment(String scoreLavage, String ts_dateScore) {
         ContentValues values = new ContentValues();
-        values.put(MySQLiteHelper.COLUMN_COMMENT, scoreLavage);
+        values.put(MySQLiteHelper.COLUMN_SCORE, scoreLavage);
         values.put(MySQLiteHelper.COLUMN_DATESCORE, ts_dateScore);
-        long insertId = database.insert(MySQLiteHelper.TABLE_COMMENTS, null,values);
-        Cursor cursor = database.query(MySQLiteHelper.TABLE_COMMENTS,allColumns, MySQLiteHelper.COLUMN_ID + " = " + insertId, null,null, null, null);
+        long insertId = database.insert(MySQLiteHelper.TABLE_SCORES, null,values);
+        Cursor cursor = database.query(MySQLiteHelper.TABLE_SCORES,allColumns, MySQLiteHelper.COLUMN_ID + " = " + insertId, null,null, null, null);
         cursor.moveToFirst();
         ScoreLavage newComment = cursorToScoreLavage(cursor);
         cursor.close();
@@ -46,13 +48,13 @@ public class ScoreLavageDataSource {
     public void deleteComment(ScoreLavage scoreLavage) {
         long id = scoreLavage.getId();
         System.out.println("Comment deleted with id: " + id);
-        database.delete(MySQLiteHelper.TABLE_COMMENTS, MySQLiteHelper.COLUMN_ID + " = " + id, null);
+        database.delete(MySQLiteHelper.TABLE_SCORES, MySQLiteHelper.COLUMN_ID + " = " + id, null);
     }
 
     public List<ScoreLavage> getAllComments() {
         List<ScoreLavage> scores = new ArrayList<ScoreLavage>();
 
-        Cursor cursor = database.query(MySQLiteHelper.TABLE_COMMENTS,
+        Cursor cursor = database.query(MySQLiteHelper.TABLE_SCORES,
                 allColumns, null, null, null, null, null);
 
         cursor.moveToFirst();

@@ -1,30 +1,20 @@
-package fr.lemeut.loic.musketeeth;
+package fr.lemeut.loic.musketeeth.activity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import java.text.Format;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-import java.util.TimeZone;
 
-import fr.lemeut.loic.musketeeth.sql.ScoreLavage;
-import fr.lemeut.loic.musketeeth.sql.ScoreLavageDataSource;
+import fr.lemeut.loic.musketeeth.sqlscorelavage.ScoreLavage;
+import fr.lemeut.loic.musketeeth.sqlscorelavage.ScoreLavageDataSource;
 
 /**
  * Created by Loic on 06/07/2015.
  */
-public class ViewScores extends Activity {
+public class AllScoresActivity extends Activity {
     private ScoreLavageDataSource datasource;
 
     String score;
@@ -47,7 +37,7 @@ public class ViewScores extends Activity {
             TextView tv=new TextView(getApplicationContext());
             tv.setTextColor(Color.BLUE);
 
-            tv.setText(score+ " *** " + Ts_dateScore);
+            tv.setText(score + " *** " + Ts_dateScore);
             layout.addView(tv);
         }
 

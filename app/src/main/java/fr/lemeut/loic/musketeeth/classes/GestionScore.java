@@ -1,6 +1,15 @@
-package fr.lemeut.loic.musketeeth;
+package fr.lemeut.loic.musketeeth.classes;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import java.util.List;
+
+import fr.lemeut.loic.musketeeth.sqlscorelavage.ScoreLavage;
+import fr.lemeut.loic.musketeeth.sqlscorelavage.ScoreLavageDataSource;
 
 /**
  * Created by Loic on 03/07/2015.
@@ -14,6 +23,28 @@ public class GestionScore {
     private int pointsDERRIERE_HAUT = 10;
     private int pointsDERRIERE_BAS = 10;
     private int pointsNOTHING = -10;
+    private int scoreTotal=0;
+    private ScoreLavageDataSource datasource;
+
+    public GestionScore() {
+        scoreTotal = 0;
+    }
+
+    public int getScoreTotal(Context _context) {
+
+        datasource = new ScoreLavageDataSource(_context);
+        datasource.open();
+        List<ScoreLavage> values = datasource.getAllComments();
+        int score;
+
+        for (int i = 0; i < values.size(); i++) {
+            score = Integer.parseInt(values.get(i).getscore());
+            scoreTotal+= score;
+        }
+
+        return scoreTotal;
+    }
+
 
     public GestionScore(Bundle myIntent) {
         float messageTempsLavage = (float)myIntent.get("tempsLavage");

@@ -10,18 +10,28 @@ import android.util.Log;
  */
 public class MySQLiteHelper extends SQLiteOpenHelper {
 
-    public static final String TABLE_COMMENTS = "ScoreLavage";
+    public static final String TABLE_SCORES = "ScoreLavage";
     public static final String COLUMN_ID = "_id";
-    public static final String COLUMN_COMMENT = "ScoreLavage";
+    public static final String COLUMN_SCORE = "ScoreLavage";
     public static final String COLUMN_DATESCORE = "DateScore";
 
-    private static final String DATABASE_NAME = "ScoreLavageItescia4.db";
+    public static final String TABLE_BADGES = "Badges";
+    public static final String COLUMN_IDBADGE = "_id";
+    public static final String COLUMN_NAME = "Badges_BadgeName";
+    public static final String COLUMN_SCOREMAX = "Badges_ScoreMax";
+    public static final String COLUMN_HASBADGE = "Badges_HasBadge";
+
+    private static final String DATABASE_NAME = "ScoreLavageItescia5.db";
     private static final int DATABASE_VERSION = 1;
 
     // Commande sql pour la creation de la base de donnees
     private static final String DATABASE_CREATE = "create table "
-            + TABLE_COMMENTS + "(" + COLUMN_ID
-            + " integer primary key autoincrement, " + COLUMN_COMMENT +", "+ COLUMN_DATESCORE
+            + TABLE_SCORES + "(" + COLUMN_ID
+            + " integer primary key autoincrement, " + COLUMN_SCORE +", "+ COLUMN_DATESCORE
+            + ");";
+    private static final String DATABASE_CREATEBADGE = "create table "
+            + TABLE_BADGES + "(" + COLUMN_IDBADGE
+            + " integer primary key autoincrement, " + COLUMN_NAME +", "+ COLUMN_SCOREMAX+", "+ COLUMN_HASBADGE
             + ");";
 
     public MySQLiteHelper(Context context) {
@@ -31,6 +41,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase database) {
         database.execSQL(DATABASE_CREATE);
+        database.execSQL(DATABASE_CREATEBADGE);
     }
 
     @Override
@@ -38,7 +49,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         Log.w(MySQLiteHelper.class.getName(),
                 "Upgrading database from version " + oldVersion + " to "
                         + newVersion + ", which will destroy all old data");
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_COMMENTS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SCORES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_BADGES);
         onCreate(db);
     }
 }

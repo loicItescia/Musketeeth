@@ -1,4 +1,4 @@
-package fr.lemeut.loic.musketeeth;
+package fr.lemeut.loic.musketeeth.activity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
+
+import fr.lemeut.loic.musketeeth.R;
 
 /**
  * Created by Loic on 03/07/2015.
