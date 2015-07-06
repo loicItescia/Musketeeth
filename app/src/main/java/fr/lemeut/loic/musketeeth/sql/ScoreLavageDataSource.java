@@ -31,9 +31,9 @@ public class ScoreLavageDataSource {
         dbHelper.close();
     }
 
-    public ScoreLavage createComment(String comment, String ts_dateScore) {
+    public ScoreLavage createComment(String scoreLavage, String ts_dateScore) {
         ContentValues values = new ContentValues();
-        values.put(MySQLiteHelper.COLUMN_COMMENT, comment);
+        values.put(MySQLiteHelper.COLUMN_COMMENT, scoreLavage);
         values.put(MySQLiteHelper.COLUMN_DATESCORE, ts_dateScore);
         long insertId = database.insert(MySQLiteHelper.TABLE_COMMENTS, null,values);
         Cursor cursor = database.query(MySQLiteHelper.TABLE_COMMENTS,allColumns, MySQLiteHelper.COLUMN_ID + " = " + insertId, null,null, null, null);
@@ -43,34 +43,34 @@ public class ScoreLavageDataSource {
         return newComment;
     }
 
-    public void deleteComment(ScoreLavage comment) {
-        long id = comment.getId();
+    public void deleteComment(ScoreLavage scoreLavage) {
+        long id = scoreLavage.getId();
         System.out.println("Comment deleted with id: " + id);
         database.delete(MySQLiteHelper.TABLE_COMMENTS, MySQLiteHelper.COLUMN_ID + " = " + id, null);
     }
 
     public List<ScoreLavage> getAllComments() {
-        List<ScoreLavage> comments = new ArrayList<ScoreLavage>();
+        List<ScoreLavage> scores = new ArrayList<ScoreLavage>();
 
         Cursor cursor = database.query(MySQLiteHelper.TABLE_COMMENTS,
                 allColumns, null, null, null, null, null);
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            ScoreLavage comment = cursorToScoreLavage(cursor);
-            comments.add(comment);
+            ScoreLavage scoreLavage = cursorToScoreLavage(cursor);
+            scores.add(scoreLavage);
             cursor.moveToNext();
         }
         // assurez-vous de la fermeture du curseur
         cursor.close();
-        return comments;
+        return scores;
     }
 
     private ScoreLavage cursorToScoreLavage(Cursor cursor) {
-        ScoreLavage comment = new ScoreLavage();
-        comment.setId(cursor.getLong(0));
-        comment.setscore(cursor.getString(1));
-        comment.setTs_dateScore(cursor.getString(2));
-        return comment;
+        ScoreLavage scoreLavage = new ScoreLavage();
+        scoreLavage.setId(cursor.getLong(0));
+        scoreLavage.setscore(cursor.getString(1));
+        scoreLavage.setTs_dateScore(cursor.getString(2));
+        return scoreLavage;
     }
 }
