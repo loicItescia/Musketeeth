@@ -14,6 +14,8 @@ import android.widget.ArrayAdapter;
 
 import org.w3c.dom.Comment;
 
+import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
@@ -49,7 +51,7 @@ public class LavageEndStatsActivity extends Activity {
         gestionTextView();
         gestionButton();
 
-        // Récupération des données de l'Intent
+        // Recuperation des donnees de l'Intent
         if(myIntent != null){
             scoreFinal = new GestionScore(myIntent);
             messageTempsLavage = Float.toString((float)myIntent.get("tempsLavage"));
@@ -78,7 +80,8 @@ public class LavageEndStatsActivity extends Activity {
         // Sauvegarde du score en BDD
         datasource = new ScoreLavageDataSource(this);
         datasource.open();
-        comment = datasource.createComment(Integer.toString(scoreFinal.getScoreFinal()));
+        int timestamp = (int)Calendar.getInstance().getTimeInMillis();
+        comment = datasource.createComment(Integer.toString(scoreFinal.getScoreFinal()), timestamp);
 
 
         // Partager sur Twitter

@@ -6,6 +6,7 @@ package fr.lemeut.loic.musketeeth.sql;
 public class ScoreLavage {
     private long id;
     private String score;
+    private int ts_dateScore; // Timestamp
 
     public long getId() {
         return id;
@@ -23,9 +24,17 @@ public class ScoreLavage {
         this.score = score;
     }
 
-    // Sera utilisée par ArrayAdapter dans la ListView
+    // Sera utilisee par ArrayAdapter dans la ListView
     @Override
     public String toString() {
         return score;
+    }
+
+    public int getTs_dateScore() {
+        return ts_dateScore;
+    }
+
+    public void setTs_dateScore(int ts_dateScore) {
+        this.ts_dateScore = ts_dateScore;
     }
 }

@@ -13,14 +13,15 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String TABLE_COMMENTS = "ScoreLavage";
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_COMMENT = "ScoreLavage";
+    public static final String COLUMN_DATESCORE = "DateScore";
 
-    private static final String DATABASE_NAME = "ScoreLavage.db";
+    private static final String DATABASE_NAME = "ScoreLavageItescia.db";
     private static final int DATABASE_VERSION = 1;
 
-    // Commande sql pour la création de la base de données
+    // Commande sql pour la creation de la base de donnees
     private static final String DATABASE_CREATE = "create table "
             + TABLE_COMMENTS + "(" + COLUMN_ID
-            + " integer primary key autoincrement, " + COLUMN_COMMENT
+            + " integer primary key autoincrement, " + COLUMN_COMMENT +", "+ COLUMN_DATESCORE
             + " text not null);";
 
     public MySQLiteHelper(Context context) {

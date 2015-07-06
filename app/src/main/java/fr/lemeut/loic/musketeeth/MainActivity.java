@@ -36,7 +36,7 @@ public class MainActivity extends Activity {
         List<ScoreLavage> values = datasource.getAllComments();
         ListView lv = (ListView) findViewById(R.id.listView);
 
-        ArrayAdapter<ScoreLavage> adapter = new ArrayAdapter<ScoreLavage>(this,android.R.layout.simple_list_item_1, values);
+        ArrayAdapter<ScoreLavage> adapter = new ArrayAdapter<ScoreLavage>(this,android.R.layout.simple_expandable_list_item_1, values);
         lv.setAdapter(adapter);
 
         // Bouton start
