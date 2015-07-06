@@ -31,7 +31,7 @@ public class ScoreLavageDataSource {
         dbHelper.close();
     }
 
-    public ScoreLavage createComment(String comment, int ts_dateScore) {
+    public ScoreLavage createComment(String comment, String ts_dateScore) {
         ContentValues values = new ContentValues();
         values.put(MySQLiteHelper.COLUMN_COMMENT, comment);
         values.put(MySQLiteHelper.COLUMN_DATESCORE, ts_dateScore);
@@ -70,7 +70,7 @@ public class ScoreLavageDataSource {
         ScoreLavage comment = new ScoreLavage();
         comment.setId(cursor.getLong(0));
         comment.setscore(cursor.getString(1));
-        comment.setTs_dateScore(cursor.getInt(2));
+        comment.setTs_dateScore(cursor.getString(2));
         return comment;
     }
 }

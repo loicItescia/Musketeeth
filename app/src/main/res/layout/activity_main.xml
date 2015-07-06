@@ -13,22 +13,12 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
-    <TextView
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Liste des scores"
-        android:id="@+id/textView23"
-        android:layout_marginTop="22dp"
-        android:textSize="20dp"
+        android:text="Voir les scores"
+        android:id="@+id/button6"
         android:layout_below="@+id/button"
         android:layout_centerHorizontal="true" />
-
-    <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/listView"
-        android:layout_below="@+id/textView23"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp" />
 
 </RelativeLayout>

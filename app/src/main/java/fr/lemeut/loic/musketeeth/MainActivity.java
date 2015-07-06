@@ -1,6 +1,7 @@
 package fr.lemeut.loic.musketeeth;
 
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -12,7 +13,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -22,7 +25,7 @@ import fr.lemeut.loic.musketeeth.sql.ScoreLavageDataSource;
 public class MainActivity extends Activity {
 
     Context _context;
-    private ScoreLavageDataSource datasource;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,14 +33,19 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         _context = this;
 
-        // Affichage de la BDD dans un listView sur la home de l'application
-        datasource = new ScoreLavageDataSource(this);
-        datasource.open();
-        List<ScoreLavage> values = datasource.getAllComments();
-        ListView lv = (ListView) findViewById(R.id.listView);
 
-        ArrayAdapter<ScoreLavage> adapter = new ArrayAdapter<ScoreLavage>(this,android.R.layout.simple_expandable_list_item_1, values);
-        lv.setAdapter(adapter);
+
+        // Bouton start
+        Button buttonViewScores = (Button) findViewById(R.id.button6);
+        buttonViewScores.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                Intent goToNextActivty = new Intent(_context.getApplicationContext(), ViewScores.class);
+                _context.startActivity(goToNextActivty);
+            }
+        });
+
+
 
         // Bouton start
         Button buttonStartLavage = (Button) findViewById(R.id.button);
@@ -49,23 +57,13 @@ public class MainActivity extends Activity {
             }
         });
 
+        //la suppression de la notification se fait grâce à son ID
+        final NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(1);
 
-    }
 
-    @Override
-    protected void onResume() {
-        datasource.open();
-        super.onResume();
-        // Affichage de la BDD dans un listView sur la home de l'application
-        datasource = new ScoreLavageDataSource(this);
-        datasource.open();
-        List<ScoreLavage> values = datasource.getAllComments();
-        ListView lv = (ListView) findViewById(R.id.listView);
-    }
 
-    @Override
-    protected void onPause() {
-        datasource.close();
-        super.onPause();
-    }
+}
+
+
 }
