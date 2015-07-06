@@ -1,11 +1,7 @@
 package fr.lemeut.loic.musketeeth.classes;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
 import java.util.List;
 
 import fr.lemeut.loic.musketeeth.sqlscorelavage.ScoreLavage;
@@ -13,6 +9,8 @@ import fr.lemeut.loic.musketeeth.sqlscorelavage.ScoreLavageDataSource;
 
 /**
  * Created by Loic on 03/07/2015.
+ *
+ * Gère les scores, le score total,  et les meilleurs score
  */
 public class GestionScore {
     private float scoreFinal = 0;
@@ -30,13 +28,14 @@ public class GestionScore {
         scoreTotal = 0;
     }
 
+    // Charge le score total pour un utilisateur (En fonction de toutes les fois jouées)
     public int getScoreTotal(Context _context) {
-
         datasource = new ScoreLavageDataSource(_context);
         datasource.open();
         List<ScoreLavage> values = datasource.getAllComments();
         int score;
 
+        // Concaténation du score
         for (int i = 0; i < values.size(); i++) {
             score = Integer.parseInt(values.get(i).getscore());
             scoreTotal+= score;
@@ -45,7 +44,7 @@ public class GestionScore {
         return scoreTotal;
     }
 
-
+    // Calcul le score final d'un brossage
     public GestionScore(Bundle myIntent) {
         float messageTempsLavage = (float)myIntent.get("tempsLavage");
         float SCORE_DEVANT_VERTICAL =  (float)myIntent.get("SCORE_DEVANT_VERTICAL")/1000;

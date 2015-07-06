@@ -124,11 +124,13 @@ public class LavageEndStatsActivity extends Activity {
         });
     }
 
+    // Gestion des Boutons
     private void gestionButton() {
         buttonShare = (Button) findViewById(R.id.button3);
         buttonDeleteBDD = (Button) findViewById(R.id.button5);
     }
 
+    // Gestion de tous les TextView
     private void gestionTextView() {
         viewTempsLavage = (TextView) findViewById(R.id.textView7);
         viewSCORE_DEVANT_VERTICAL = (TextView) findViewById(R.id.textView15);
@@ -153,44 +155,59 @@ public class LavageEndStatsActivity extends Activity {
         super.onPause();
     }
 
+    /*
+     * Recherce si un nouveau badge peut-être débloqué
+     *
+     * Recherche dans tout les badges non attribués, et si le score dépasse un seuil, attribuer un nouveau bade à l'utilisateur
+     */
     private void gestionBadges(int scoreCourant){
+        // Initialisation variables
         String Badges_BadgeName;
         int Badges_ScoreMax;
         int Badges_HasBadge;
         int scoreTotal = 0;
         long Badges_BadgeId =0;
-
         BadgesDataSource datasourceBadge;
         Badges badge;
+
+        // Initialisation du DataSource pour charger les badges
         datasourceBadge = new BadgesDataSource(this);
         datasourceBadge.open();
         List<Badges> values = datasourceBadge.getAllBadges();
 
+        // Boucle sur tout les badges
         for (int i = 0; i < values.size(); i++) {
             Badges_BadgeId = values.get(i).getId();
             Badges_BadgeName = values.get(i).getBadges_BadgeName();
             Badges_ScoreMax = values.get(i).getBadges_ScoreMax();
             Badges_HasBadge = values.get(i).getBadges_HasBadge();
 
-            // SI l'utilisateur en dispose pas du badge
+            // Si l'utilisateur en dispose pas du badge
             if(Badges_HasBadge==0){
+                // Charge l'objet des meilleurs scores
                 GestionScore score = new GestionScore();
                 scoreTotal = score.getScoreTotal(_context);
+
+                // Si le score de l'utilisateur dépasse le seuil du badge, on lui attribut le badge
                 if(scoreTotal+scoreCourant > Badges_ScoreMax){
-                    // Notificaction
+                    // Balance un toast
                     Toast.makeText(getBaseContext(), "NOUVEAU "+Badges_BadgeName+" ("+Badges_ScoreMax+") DEBLOQUE !", Toast.LENGTH_SHORT).show();
+                    // Balance ne notification
                     createNotification("NOUVEAU "+Badges_BadgeName+" ("+Badges_ScoreMax+") DEBLOQUE !");
+
+                    // En enfin, sauvegarde du badge pour l'utilisateur
                     if(datasourceBadge.applyBadge(Badges_BadgeId)){
                         Toast.makeText(getBaseContext(), "MAJ OK !", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
-
         }
-
         datasourceBadge.close();
     }
 
+    /*
+     * Création d'une notification pour indiquer un nouveau badge
+     */
     private final void createNotification(String notificationDesc) {
         //Recuperation du titre et description de la notification
         final String notificationTitle = "Nouveau badge debloque !";
