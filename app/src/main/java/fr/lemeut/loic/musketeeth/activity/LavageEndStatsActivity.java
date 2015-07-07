@@ -42,8 +42,8 @@ import  fr.lemeut.loic.musketeeth.sqlscorelavage.ScoreLavageDataSource;
  */
 public class LavageEndStatsActivity extends ActionBarActivity {
     private TextView viewTempsLavage, viewSCORE_DEVANT_VERTICAL, viewSCORE_DESSUS_BAS_HORIZONTALE, viewSCORE_DESSOUS_HAUT_HORIZONTALE,
-            viewSCORE_DERRIERE_HAUT, viewSCORE_DERRIERE_BAS, viewSCORE_NOTHING, viewScoreFinal;
-    private Button buttonShare, buttonDeleteBDD, buttonDeleteBDDBadges;
+            viewSCORE_DERRIERE_HAUT, viewSCORE_DERRIERE_BAS, viewSCORE_NOTHING, viewScoreFinal, viewHighScore, viewNewBadge;
+    private Button buttonDeleteBDD, buttonDeleteBDDBadges, buttonShareBadge, buttonShareHighScore;
     String messageTempsLavage = "";
     private float TempsLavage = 0;
     private String SCORE_DEVANT_VERTICAL;
@@ -55,6 +55,7 @@ public class LavageEndStatsActivity extends ActionBarActivity {
     private ScoreLavageDataSource datasource;
     private ScoreLavage comment;
     private Context _context;
+    private int meilleurScore = 0;
 
     private CallbackManager callbackManager;
     private LoginButton fbLoginButton;
@@ -102,6 +103,8 @@ public class LavageEndStatsActivity extends ActionBarActivity {
         viewSCORE_NOTHING.setText(SCORE_NOTHING + " s");
         viewScoreFinal.setText(Integer.toString(scoreFinal.getScoreFinal()));
 
+        // Calcul meilleur score
+        gestionMeilleurScore(scoreFinal.getScoreFinal());
 
         // Sauvegarde du score en BDD
         datasource = new ScoreLavageDataSource(this);
@@ -117,8 +120,40 @@ public class LavageEndStatsActivity extends ActionBarActivity {
 
         // Gestion des badges
         gestionBadges(scoreFinal.getScoreFinal());
+    }
 
+    /*
+     * Gestion de calcul du meilleur score
+     */
+    private void gestionMeilleurScore(int scoreCourant) {
+        // Charge l'objet des meilleurs scores
+        GestionScore score = new GestionScore();
+        meilleurScore = score.getMeilleurScore(_context);
 
+        // Si meileur score, affiche d'un toast + notif + share button
+        if(scoreCourant > meilleurScore){
+            buttonShareHighScore.setVisibility(View.VISIBLE);
+            viewHighScore.setVisibility(View.VISIBLE);
+            // Balance un toast
+            Toast.makeText(getBaseContext(), "Meilleur score battu !", Toast.LENGTH_SHORT).show();
+            // Balance ne notification
+            createNotification("Meilleur score battu !", 2, "Meilleur score battu ");
+        }
+    }
+
+    // Gestion des Boutons
+    private void gestionButton() {
+        buttonDeleteBDD = (Button) findViewById(R.id.button5);
+        buttonDeleteBDDBadges = (Button) findViewById(R.id.button8);
+        buttonShareBadge = (Button) findViewById(R.id.button9);
+        buttonShareBadge.setVisibility(View.INVISIBLE);
+        buttonShareHighScore = (Button) findViewById(R.id.button3); // On cache de base
+        buttonShareHighScore.setVisibility(View.INVISIBLE); // On cache de base
+        gestionButtonFacebook();
+        gestionButtonClick();
+    }
+
+    private void gestionButtonClick() {
         // Vider la BDD
         buttonDeleteBDD.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,7 +162,7 @@ public class LavageEndStatsActivity extends ActionBarActivity {
                 int size = values.size();
                 for (ScoreLavage i : values) {
                     datasource.deleteComment(i);
-                    Toast.makeText(getBaseContext(), "SCORE DELETE ! ["+i.toString()+"]", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), "SCORE DELETE ! [" + i.toString() + "]", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -147,30 +182,33 @@ public class LavageEndStatsActivity extends ActionBarActivity {
                 for (int i = 0; i < values.size(); i++) {
                     long Badges_BadgeId = values.get(i).getId();
                     // En enfin, sauvegarde du badge pour l'utilisateur
-                    if(datasourceBadge.applyBadge(Badges_BadgeId, 0)){
-                        Toast.makeText(getBaseContext(), "BADGE REMOVE ! ["+Long.toString(Badges_BadgeId)+"]", Toast.LENGTH_SHORT).show();
+                    if (datasourceBadge.applyBadge(Badges_BadgeId, 0)) {
+                        Toast.makeText(getBaseContext(), "BADGE REMOVE ! [" + Long.toString(Badges_BadgeId) + "]", Toast.LENGTH_SHORT).show();
                     }
                 }
                 datasourceBadge.close();
             }
         });
 
-        // Partager sur Twitter
-        buttonShare.setOnClickListener(new View.OnClickListener() {
+        // Partager sur Facebook
+        buttonShareBadge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 // Publication sur Facebook
                 publishFaceBook();
             }
         });
-    }
 
-    // Gestion des Boutons
-    private void gestionButton() {
-        buttonShare = (Button) findViewById(R.id.button3);
-        buttonDeleteBDD = (Button) findViewById(R.id.button5);
-        buttonDeleteBDDBadges = (Button) findViewById(R.id.button8);
-        gestionButtonFacebook();
+        // Partager sur Facebook
+        buttonShareHighScore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                // Publication sur Facebook
+                publishFaceBook();
+            }
+        });
+
+
     }
 
     // Gestion de tous les TextView
@@ -183,6 +221,10 @@ public class LavageEndStatsActivity extends ActionBarActivity {
         viewSCORE_DERRIERE_BAS = (TextView) findViewById(R.id.textView19);
         viewSCORE_NOTHING = (TextView) findViewById(R.id.textView20);
         viewScoreFinal = (TextView) findViewById(R.id.textView21);
+        viewHighScore = (TextView) findViewById(R.id.textView23);
+        viewHighScore.setVisibility(View.INVISIBLE); // On cache de base
+        viewNewBadge = (TextView) findViewById(R.id.textView24);
+        viewNewBadge.setVisibility(View.INVISIBLE); // On cache de base
     }
 
 
@@ -218,6 +260,9 @@ public class LavageEndStatsActivity extends ActionBarActivity {
         datasourceBadge.open();
         List<Badges> values = datasourceBadge.getAllBadges();
 
+        // Charge l'objet des meilleurs scores
+        GestionScore score = new GestionScore();
+        scoreTotal = score.getScoreTotal(_context);
 
         // Boucle sur tout les badges
         for (int i = 0; i < values.size(); i++) {
@@ -228,20 +273,17 @@ public class LavageEndStatsActivity extends ActionBarActivity {
 
             // Si l'utilisateur en dispose pas du badge
             if(Badges_HasBadge==0){
-                // Charge l'objet des meilleurs scores
-                GestionScore score = new GestionScore();
-                scoreTotal = score.getScoreTotal(_context);
-
                 // Si le score de l'utilisateur depasse le seuil du badge, on lui attribut le badge
                 if(scoreTotal+scoreCourant > Badges_ScoreMax){
                     // Balance un toast
                     Toast.makeText(getBaseContext(), "NOUVEAU "+Badges_BadgeName+" ("+Badges_ScoreMax+") DEBLOQUE !", Toast.LENGTH_SHORT).show();
                     // Balance ne notification
-                    createNotification("NOUVEAU " + Badges_BadgeName + " (" + Badges_ScoreMax + ") DEBLOQUE !");
+                    createNotification("NOUVEAU " + Badges_BadgeName + " (" + Badges_ScoreMax + ") DEBLOQUE !", 1, "NOUVEAU BADGE !!");
 
                     // En enfin, sauvegarde du badge pour l'utilisateur
                     if(datasourceBadge.applyBadge(Badges_BadgeId, 1)){
-                        Toast.makeText(getBaseContext(), "MAJ OK !", Toast.LENGTH_SHORT).show();
+                        buttonShareBadge.setVisibility(View.VISIBLE);
+                        viewNewBadge.setVisibility(View.VISIBLE);
                     }
                 }
             }
@@ -252,10 +294,7 @@ public class LavageEndStatsActivity extends ActionBarActivity {
     /*
      * Creation d'une notification pour indiquer un nouveau badge
      */
-    private final void createNotification(String notificationDesc) {
-        //Recuperation du titre et description de la notification
-        final String notificationTitle = "Nouveau badge debloque !";
-
+    private final void createNotification(String notificationDesc, int idNotif, String notificationTitle) {
         //Recuperation du notification Manager
         final NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -268,7 +307,7 @@ public class LavageEndStatsActivity extends ActionBarActivity {
         //Notification & Vibration
         notification.setLatestEventInfo(this, notificationTitle, notificationDesc, pendingIntent);
         notification.vibrate = new long[]{0, 200, 100, 200, 100, 200};
-        notificationManager.notify(1, notification);
+        notificationManager.notify(idNotif, notification);
     }
 
 

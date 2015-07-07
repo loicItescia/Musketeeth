@@ -71,6 +71,6 @@ public class MainActivity extends Activity {
         // La suppression de la notification se fait grace a son ID
         final NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(1);
-
+        notificationManager.cancel(2);
     }
 }

@@ -24,6 +24,25 @@ public class GestionScore {
     private int scoreTotal=0;
     private ScoreLavageDataSource datasource;
 
+    public int getMeilleurScore(Context _context) {
+        datasource = new ScoreLavageDataSource(_context);
+        datasource.open();
+        List<ScoreLavage> values = datasource.getAllComments();
+        int scoreTemp = 0;
+
+        for (int i = 0; i < values.size(); i++) {
+            int score = Integer.parseInt(values.get(i).getscore());
+            if(score > scoreTemp){
+                meilleurScore = score;
+            }
+            scoreTemp = score;
+        }
+
+        return meilleurScore;
+    }
+
+    private int meilleurScore = 0;
+
     public GestionScore() {
         scoreTotal = 0;
     }

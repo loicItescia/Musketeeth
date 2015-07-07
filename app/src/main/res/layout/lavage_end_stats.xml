@@ -146,18 +146,18 @@
         android:layout_height="wrap_content"
         android:text="Partager"
         android:id="@+id/button3"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="125dp" />
+        android:layout_marginTop="41dp"
+        android:layout_below="@+id/textView21"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New Text"
         android:id="@+id/textView21"
-        android:layout_marginBottom="59dp"
         android:textSize="35dp"
-        android:layout_above="@+id/button3"
+        android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
@@ -166,19 +166,22 @@
         android:layout_height="wrap_content"
         android:text="SCORE:"
         android:id="@+id/textView22"
-        android:layout_alignTop="@+id/textView21"
-        android:layout_alignRight="@+id/textView13"
-        android:layout_alignEnd="@+id/textView13"
         android:textIsSelectable="false"
-        android:textSize="30dp" />
+        android:textSize="30dp"
+        android:layout_alignBottom="@+id/textView21"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sauvegarder en BDD"
         android:id="@+id/button4"
-        android:layout_above="@+id/button3"
-        android:layout_centerHorizontal="true" />
+        android:layout_above="@+id/button5"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -189,8 +192,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/textView22"
-        android:layout_alignEnd="@+id/textView22" />
+        android:layout_alignRight="@+id/textView13"
+        android:layout_alignEnd="@+id/textView13" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -201,6 +204,36 @@
         android:layout_alignTop="@+id/button5"
         android:layout_toRightOf="@+id/textView12"
         android:layout_toEndOf="@+id/textView12" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Meilleur score !"
+        android:id="@+id/textView23"
+        android:textSize="25dp"
+        android:layout_alignTop="@+id/button3"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nouveau Badge !"
+        android:id="@+id/textView24"
+        android:layout_below="@+id/button3"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textSize="25dp" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Partager"
+        android:id="@+id/button9"
+        android:layout_below="@+id/button3"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 
 </RelativeLayout>
