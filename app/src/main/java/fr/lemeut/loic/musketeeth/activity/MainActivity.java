@@ -59,11 +59,11 @@ public class MainActivity extends Activity {
                 Badges badge;
                 datasource = new BadgesDataSource(_context);
                 datasource.open();
-                //datasource.createBadge("BADGE 1", 100, 0);
-                //datasource.createBadge("BADGE 2", 200, 0);
-                //datasource.createBadge("BADGE 3", 500, 0);
-                //datasource.createBadge("BADGE 4", 1000, 0);
-                //datasource.createBadge("BADGE 5", 1050, 0);
+                /*datasource.createBadge("BADGE 1", 100, 0);
+                datasource.createBadge("BADGE 2", 200, 0);
+                datasource.createBadge("BADGE 3", 500, 0);
+                datasource.createBadge("BADGE 4", 1000, 0);
+                datasource.createBadge("BADGE 5", 1050, 0);*/
                 datasource.close();
             }
         });
@@ -71,6 +71,6 @@ public class MainActivity extends Activity {
         // La suppression de la notification se fait grace a son ID
         final NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(1);
-
+        notificationManager.cancel(2);
     }
 }

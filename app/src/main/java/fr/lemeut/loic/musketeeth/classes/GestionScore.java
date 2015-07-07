@@ -10,7 +10,7 @@ import fr.lemeut.loic.musketeeth.sqlscorelavage.ScoreLavageDataSource;
 /**
  * Created by Loic on 03/07/2015.
  *
- * Gére les scores, le score total,  et les meilleurs score
+ * Gere les scores, le score total,  et les meilleurs score
  */
 public class GestionScore {
     private float scoreFinal = 0;
@@ -24,18 +24,37 @@ public class GestionScore {
     private int scoreTotal=0;
     private ScoreLavageDataSource datasource;
 
+    public int getMeilleurScore(Context _context) {
+        datasource = new ScoreLavageDataSource(_context);
+        datasource.open();
+        List<ScoreLavage> values = datasource.getAllComments();
+        int scoreTemp = 0;
+
+        for (int i = 0; i < values.size(); i++) {
+            int score = Integer.parseInt(values.get(i).getscore());
+            if(score > scoreTemp){
+                meilleurScore = score;
+            }
+            scoreTemp = score;
+        }
+
+        return meilleurScore;
+    }
+
+    private int meilleurScore = 0;
+
     public GestionScore() {
         scoreTotal = 0;
     }
 
-    // Charge le score total pour un utilisateur (En fonction de toutes les fois jouées)
+    // Charge le score total pour un utilisateur (En fonction de toutes les fois jouees)
     public int getScoreTotal(Context _context) {
         datasource = new ScoreLavageDataSource(_context);
         datasource.open();
         List<ScoreLavage> values = datasource.getAllComments();
         int score;
 
-        // Concaténation du score
+        // Concatenation du score
         for (int i = 0; i < values.size(); i++) {
             score = Integer.parseInt(values.get(i).getscore());
             scoreTotal+= score;

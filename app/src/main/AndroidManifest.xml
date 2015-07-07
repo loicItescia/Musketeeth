@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="fr.lemeut.loic.musketeeth" >
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:label="@string/app_name" />
         <activity
             android:name=".activity.HomeActivity"
             android:label="@string/app_name" >
@@ -27,6 +37,11 @@
             android:label="@string/app_name" />
 
         <uses-permission android:name="android.permission.VIBRATE" />
+        <activity  android:name=".activity.LavageStartActivity" android:label="@string/app_name"></activity>
+        <activity  android:name=".activity.LavageEndStatsActivity" android:label="@string/app_name"></activity>
+        <activity  android:name=".activity.AllScoresActivity" android:label="@string/app_name"></activity>
+
+    </application>
 
         <activity
             android:name=".activity.MainActivity"

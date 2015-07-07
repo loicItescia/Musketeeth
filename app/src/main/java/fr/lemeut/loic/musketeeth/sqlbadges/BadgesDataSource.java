@@ -53,9 +53,9 @@ public class BadgesDataSource {
         return badge;
     }
 
-    public boolean applyBadge(long badge_id) {
+    public boolean applyBadge(long badge_id, int hasBadge) {
         ContentValues values = new ContentValues();
-        values.put(MySQLiteHelper.COLUMN_HASBADGE, 1);
+        values.put(MySQLiteHelper.COLUMN_HASBADGE, hasBadge);
 
         long updateId = database.update(MySQLiteHelper.TABLE_BADGES,values, MySQLiteHelper.COLUMN_IDBADGE + " = " + badge_id, null);
         if(updateId!=0){
