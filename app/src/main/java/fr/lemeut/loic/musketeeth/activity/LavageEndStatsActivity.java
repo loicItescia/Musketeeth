@@ -30,6 +30,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+import fr.lemeut.loic.musketeeth.classes.Badge;
 import fr.lemeut.loic.musketeeth.classes.GestionScore;
 import fr.lemeut.loic.musketeeth.R;
 import fr.lemeut.loic.musketeeth.sqlbadges.Badges;
@@ -56,6 +57,8 @@ public class LavageEndStatsActivity extends ActionBarActivity {
     private ScoreLavage comment;
     private Context _context;
     private int meilleurScore = 0;
+    private int scoreCourant = 0;
+    private long idBadgeDebloque =0;
 
     private CallbackManager callbackManager;
     private LoginButton fbLoginButton;
@@ -104,7 +107,8 @@ public class LavageEndStatsActivity extends ActionBarActivity {
         viewScoreFinal.setText(Integer.toString(scoreFinal.getScoreFinal()));
 
         // Calcul meilleur score
-        gestionMeilleurScore(scoreFinal.getScoreFinal());
+        scoreCourant = scoreFinal.getScoreFinal();
+        gestionMeilleurScore(scoreCourant);
 
         // Sauvegarde du score en BDD
         datasource = new ScoreLavageDataSource(this);
@@ -119,7 +123,7 @@ public class LavageEndStatsActivity extends ActionBarActivity {
         comment = datasource.createComment(Integer.toString(scoreFinal.getScoreFinal()), dayOfMonthStr + "-" + MonthStr + "-" + YearStr);
 
         // Gestion des badges
-        gestionBadges(scoreFinal.getScoreFinal());
+        gestionBadges(scoreCourant);
     }
 
     /*
@@ -137,7 +141,7 @@ public class LavageEndStatsActivity extends ActionBarActivity {
             // Balance un toast
             Toast.makeText(getBaseContext(), "Meilleur score battu !", Toast.LENGTH_SHORT).show();
             // Balance ne notification
-            createNotification("Meilleur score battu !", 2, "Meilleur score battu ");
+            createNotification("Vous venez de dépasser votre meilleur socre !  ("+scoreCourant+") !", 2, "Meilleur score battu !");
         }
     }
 
@@ -190,21 +194,23 @@ public class LavageEndStatsActivity extends ActionBarActivity {
             }
         });
 
-        // Partager sur Facebook
+        // Partager sur Facebook buttonShareBadge
         buttonShareBadge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 // Publication sur Facebook
-                publishFaceBook();
+                Badge badge = new Badge();
+                publishFaceBook(badge.getDescBadge(idBadgeDebloque), badge.getImageBadge(idBadgeDebloque));
             }
         });
 
-        // Partager sur Facebook
+        // Partager sur Facebook buttonShareHighScore
         buttonShareHighScore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 // Publication sur Facebook
-                publishFaceBook();
+                Badge badge = new Badge();
+                publishFaceBook("Je viens de dépasser mon meilleur score au lavage de dents ! Mon score: "+scoreCourant,  badge.getImageBadge(-1));
             }
         });
 
@@ -276,14 +282,15 @@ public class LavageEndStatsActivity extends ActionBarActivity {
                 // Si le score de l'utilisateur depasse le seuil du badge, on lui attribut le badge
                 if(scoreTotal+scoreCourant > Badges_ScoreMax){
                     // Balance un toast
-                    Toast.makeText(getBaseContext(), "NOUVEAU "+Badges_BadgeName+" ("+Badges_ScoreMax+") DEBLOQUE !", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), "Nouveau badge débloqué !", Toast.LENGTH_SHORT).show();
                     // Balance ne notification
-                    createNotification("NOUVEAU " + Badges_BadgeName + " (" + Badges_ScoreMax + ") DEBLOQUE !", 1, "NOUVEAU BADGE !!");
+                    createNotification("Vous venez d'acquerir le badge " + Badges_BadgeName + " pour un score de " + Badges_ScoreMax + " !", 1, "Nouveau badge débloqué !");
 
                     // En enfin, sauvegarde du badge pour l'utilisateur
                     if(datasourceBadge.applyBadge(Badges_BadgeId, 1)){
                         buttonShareBadge.setVisibility(View.VISIBLE);
                         viewNewBadge.setVisibility(View.VISIBLE);
+                        idBadgeDebloque = Badges_BadgeId;
                     }
                 }
             }
@@ -357,11 +364,11 @@ public class LavageEndStatsActivity extends ActionBarActivity {
     /*
      * Publie une image et du texte sur Facebook
      */
-    public void publishFaceBook(){
-        Bitmap image = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+    public void publishFaceBook(String contentDesc, int imageDesc){
+        Bitmap image = BitmapFactory.decodeResource(getResources(), imageDesc);
         SharePhoto photo = new SharePhoto.Builder()
                 .setBitmap(image)
-                .setCaption("Give me my codez or I will ... you know, do that thing you don't like!")
+                .setCaption(contentDesc)
                 .build();
 
         SharePhotoContent content = new SharePhotoContent.Builder()
