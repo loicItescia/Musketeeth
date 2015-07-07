@@ -6,13 +6,27 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+import com.facebook.share.ShareApi;
+import com.facebook.share.model.SharePhoto;
+import com.facebook.share.model.SharePhotoContent;
+
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -26,10 +40,10 @@ import  fr.lemeut.loic.musketeeth.sqlscorelavage.ScoreLavageDataSource;
 /**
  * Created by Loic on 03/07/2015.
  */
-public class LavageEndStatsActivity extends Activity {
+public class LavageEndStatsActivity extends ActionBarActivity {
     private TextView viewTempsLavage, viewSCORE_DEVANT_VERTICAL, viewSCORE_DESSUS_BAS_HORIZONTALE, viewSCORE_DESSOUS_HAUT_HORIZONTALE,
             viewSCORE_DERRIERE_HAUT, viewSCORE_DERRIERE_BAS, viewSCORE_NOTHING, viewScoreFinal;
-    private Button buttonShare, buttonDeleteBDD;
+    private Button buttonShare, buttonDeleteBDD, buttonDeleteBDDBadges;
     String messageTempsLavage = "";
     private float TempsLavage = 0;
     private String SCORE_DEVANT_VERTICAL;
@@ -42,13 +56,22 @@ public class LavageEndStatsActivity extends Activity {
     private ScoreLavage comment;
     private Context _context;
 
+    private CallbackManager callbackManager;
+    private LoginButton fbLoginButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.lavage_end_stats);
         _context = this;
         Bundle myIntent = getIntent().getExtras(); // gets the previously created intent
         GestionScore scoreFinal = null;
+
+        // Initialisation de l'API Facebook et du bouton présent dans le layout
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        callbackManager = CallbackManager.Factory.create();
+
+        // Initialisation du layout
+        setContentView(R.layout.lavage_end_stats);
 
         // Gestion des TextView
         gestionTextView();
@@ -96,7 +119,6 @@ public class LavageEndStatsActivity extends Activity {
         gestionBadges(scoreFinal.getScoreFinal());
 
 
-
         // Vider la BDD
         buttonDeleteBDD.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,7 +127,31 @@ public class LavageEndStatsActivity extends Activity {
                 int size = values.size();
                 for (ScoreLavage i : values) {
                     datasource.deleteComment(i);
+                    Toast.makeText(getBaseContext(), "SCORE DELETE ! ["+i.toString()+"]", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        // Vider la BDD des Badges
+        buttonDeleteBDDBadges.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                BadgesDataSource datasourceBadge;
+                Badges badge;
+
+                // Initialisation du DataSource pour charger les badges
+                datasourceBadge = new BadgesDataSource(_context);
+                datasourceBadge.open();
+                List<Badges> values = datasourceBadge.getAllBadges();
+                // Boucle sur tout les badges
+                for (int i = 0; i < values.size(); i++) {
+                    long Badges_BadgeId = values.get(i).getId();
+                    // En enfin, sauvegarde du badge pour l'utilisateur
+                    if(datasourceBadge.applyBadge(Badges_BadgeId, 0)){
+                        Toast.makeText(getBaseContext(), "BADGE REMOVE ! ["+Long.toString(Badges_BadgeId)+"]", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                datasourceBadge.close();
             }
         });
 
@@ -113,13 +159,8 @@ public class LavageEndStatsActivity extends Activity {
         buttonShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, "Loic a perdu au POng !!!");
-                sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Loic a perdu au POng !!!");
-                sendIntent.setType("text/plain");
-                sendIntent.setPackage("com.twitter.android");
-                startActivity(sendIntent);
+                // Publication sur Facebook
+                publishFaceBook();
             }
         });
     }
@@ -128,6 +169,8 @@ public class LavageEndStatsActivity extends Activity {
     private void gestionButton() {
         buttonShare = (Button) findViewById(R.id.button3);
         buttonDeleteBDD = (Button) findViewById(R.id.button5);
+        buttonDeleteBDDBadges = (Button) findViewById(R.id.button8);
+        gestionButtonFacebook();
     }
 
     // Gestion de tous les TextView
@@ -156,9 +199,9 @@ public class LavageEndStatsActivity extends Activity {
     }
 
     /*
-     * Recherce si un nouveau badge peut-être débloqué
+     * Recherce si un nouveau badge peut-etre debloque
      *
-     * Recherche dans tout les badges non attribués, et si le score dépasse un seuil, attribuer un nouveau bade à l'utilisateur
+     * Recherche dans tout les badges non attribues, et si le score depasse un seuil, attribuer un nouveau bade a l'utilisateur
      */
     private void gestionBadges(int scoreCourant){
         // Initialisation variables
@@ -175,6 +218,7 @@ public class LavageEndStatsActivity extends Activity {
         datasourceBadge.open();
         List<Badges> values = datasourceBadge.getAllBadges();
 
+
         // Boucle sur tout les badges
         for (int i = 0; i < values.size(); i++) {
             Badges_BadgeId = values.get(i).getId();
@@ -188,15 +232,15 @@ public class LavageEndStatsActivity extends Activity {
                 GestionScore score = new GestionScore();
                 scoreTotal = score.getScoreTotal(_context);
 
-                // Si le score de l'utilisateur dépasse le seuil du badge, on lui attribut le badge
+                // Si le score de l'utilisateur depasse le seuil du badge, on lui attribut le badge
                 if(scoreTotal+scoreCourant > Badges_ScoreMax){
                     // Balance un toast
                     Toast.makeText(getBaseContext(), "NOUVEAU "+Badges_BadgeName+" ("+Badges_ScoreMax+") DEBLOQUE !", Toast.LENGTH_SHORT).show();
                     // Balance ne notification
-                    createNotification("NOUVEAU "+Badges_BadgeName+" ("+Badges_ScoreMax+") DEBLOQUE !");
+                    createNotification("NOUVEAU " + Badges_BadgeName + " (" + Badges_ScoreMax + ") DEBLOQUE !");
 
                     // En enfin, sauvegarde du badge pour l'utilisateur
-                    if(datasourceBadge.applyBadge(Badges_BadgeId)){
+                    if(datasourceBadge.applyBadge(Badges_BadgeId, 1)){
                         Toast.makeText(getBaseContext(), "MAJ OK !", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -206,7 +250,7 @@ public class LavageEndStatsActivity extends Activity {
     }
 
     /*
-     * Création d'une notification pour indiquer un nouveau badge
+     * Creation d'une notification pour indiquer un nouveau badge
      */
     private final void createNotification(String notificationDesc) {
         //Recuperation du titre et description de la notification
@@ -225,6 +269,67 @@ public class LavageEndStatsActivity extends Activity {
         notification.setLatestEventInfo(this, notificationTitle, notificationDesc, pendingIntent);
         notification.vibrate = new long[]{0, 200, 100, 200, 100, 200};
         notificationManager.notify(1, notification);
+    }
+
+
+    /*
+     * Action au clic sur le bouton facebook pour se connecter
+     */
+    public void gestionButtonFacebook(){
+        fbLoginButton = (LoginButton)findViewById(R.id.fb_login_button);
+        fbLoginButton.setPublishPermissions(Arrays.asList("publish_actions"));
+        fbLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+
+                System.out.println("Facebook Login Successful!");
+                System.out.println("Logged in user Details : ");
+                System.out.println("--------------------------");
+                System.out.println("User ID  : " + loginResult.getAccessToken().getUserId());
+                System.out.println("Authentication Token : " + loginResult.getAccessToken().getToken());
+                Toast.makeText(LavageEndStatsActivity.this, "Login Successful!", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onCancel() {
+                Toast.makeText(LavageEndStatsActivity.this, "Login cancelled by user!", Toast.LENGTH_LONG).show();
+                System.out.println("Facebook Login failed!!");
+
+            }
+
+            @Override
+            public void onError(FacebookException e) {
+                Toast.makeText(LavageEndStatsActivity.this, "Login unsuccessful!", Toast.LENGTH_LONG).show();
+                System.out.println("Facebook Login failed!!");
+            }
+        });
+    }
+
+
+    /*
+     * Obligatoire pour que Facebook ai un Handle de retour
+     */
+    @Override
+    protected void onActivityResult(int reqCode, int resCode, Intent i) {
+        callbackManager.onActivityResult(reqCode, resCode, i);
+    }
+
+
+    /*
+     * Publie une image et du texte sur Facebook
+     */
+    public void publishFaceBook(){
+        Bitmap image = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+        SharePhoto photo = new SharePhoto.Builder()
+                .setBitmap(image)
+                .setCaption("Give me my codez or I will ... you know, do that thing you don't like!")
+                .build();
+
+        SharePhotoContent content = new SharePhotoContent.Builder()
+                .addPhoto(photo)
+                .build();
+
+        ShareApi.share(content, null);
     }
 
 }
