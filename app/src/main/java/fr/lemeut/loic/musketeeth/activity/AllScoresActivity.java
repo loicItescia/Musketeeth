@@ -28,7 +28,7 @@ public class AllScoresActivity extends Activity {
         // Affichage de la BDD dans un listView sur la home de l'application
         datasource = new ScoreLavageDataSource(this);
         datasource.open();
-        // Récupère la liste de tous les scores
+        // RÃ©cupÃ¨re la liste de tous les scores
         List<ScoreLavage> values = datasource.getAllComments();
 
         // Fabrique des texView pour afficher les scores
@@ -41,7 +41,7 @@ public class AllScoresActivity extends Activity {
             score = values.get(i).getscore();
             Ts_dateScore = values.get(i).getTs_dateScore();
 
-            // Création d'un TextView
+            // CrÃ©ation d'un TextView
             TextView tv=new TextView(getApplicationContext());
             tv.setTextColor(Color.BLUE);
             tv.setText(score + " *** " + Ts_dateScore);

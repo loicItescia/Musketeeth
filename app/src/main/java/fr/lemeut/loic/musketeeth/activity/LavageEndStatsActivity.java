@@ -156,9 +156,9 @@ public class LavageEndStatsActivity extends Activity {
     }
 
     /*
-     * Recherce si un nouveau badge peut-être débloqué
+     * Recherce si un nouveau badge peut-Ãªtre dÃ©bloquÃ©
      *
-     * Recherche dans tout les badges non attribués, et si le score dépasse un seuil, attribuer un nouveau bade à l'utilisateur
+     * Recherche dans tout les badges non attribuÃ©s, et si le score dï¿½passe un seuil, attribuer un nouveau bade Ã  l'utilisateur
      */
     private void gestionBadges(int scoreCourant){
         // Initialisation variables
@@ -188,7 +188,7 @@ public class LavageEndStatsActivity extends Activity {
                 GestionScore score = new GestionScore();
                 scoreTotal = score.getScoreTotal(_context);
 
-                // Si le score de l'utilisateur dépasse le seuil du badge, on lui attribut le badge
+                // Si le score de l'utilisateur dÃ©passe le seuil du badge, on lui attribut le badge
                 if(scoreTotal+scoreCourant > Badges_ScoreMax){
                     // Balance un toast
                     Toast.makeText(getBaseContext(), "NOUVEAU "+Badges_BadgeName+" ("+Badges_ScoreMax+") DEBLOQUE !", Toast.LENGTH_SHORT).show();
@@ -206,7 +206,7 @@ public class LavageEndStatsActivity extends Activity {
     }
 
     /*
-     * Création d'une notification pour indiquer un nouveau badge
+     * CrÃ©ation d'une notification pour indiquer un nouveau badge
      */
     private final void createNotification(String notificationDesc) {
         //Recuperation du titre et description de la notification
