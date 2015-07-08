@@ -70,7 +70,7 @@ public class LavageEndStatsActivity extends ActionBarActivity {
         Bundle myIntent = getIntent().getExtras(); // gets the previously created intent
         GestionScore scoreFinal = null;
 
-        // Initialisation de l'API Facebook et du bouton présent dans le layout
+        // Initialisation de l'API Facebook et du bouton prÃ©sent dans le layout
         FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
 
@@ -141,7 +141,7 @@ public class LavageEndStatsActivity extends ActionBarActivity {
             // Balance un toast
             Toast.makeText(getBaseContext(), "Meilleur score battu !", Toast.LENGTH_SHORT).show();
             // Balance ne notification
-            createNotification("Vous venez de dépasser votre meilleur socre !  ("+scoreCourant+") !", 2, "Meilleur score battu !");
+            createNotification("Vous venez de dÃ©passer votre meilleur socre !  ("+scoreCourant+") !", 2, "Meilleur score battu !");
         }
     }
 
@@ -210,7 +210,7 @@ public class LavageEndStatsActivity extends ActionBarActivity {
             public void onClick(View arg0) {
                 // Publication sur Facebook
                 Badge badge = new Badge();
-                publishFaceBook("Je viens de dépasser mon meilleur score au lavage de dents ! Mon score: "+scoreCourant,  badge.getImageBadge(-1));
+                publishFaceBook("Je viens de dÃ©passer mon meilleur score au lavage de dents ! Mon score: "+scoreCourant,  badge.getImageBadge(-1));
             }
         });
 
@@ -282,9 +282,9 @@ public class LavageEndStatsActivity extends ActionBarActivity {
                 // Si le score de l'utilisateur depasse le seuil du badge, on lui attribut le badge
                 if(scoreTotal+scoreCourant > Badges_ScoreMax){
                     // Balance un toast
-                    Toast.makeText(getBaseContext(), "Nouveau badge débloqué !", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), "Nouveau badge dÃ©bloquÃ© !", Toast.LENGTH_SHORT).show();
                     // Balance ne notification
-                    createNotification("Vous venez d'acquerir le badge " + Badges_BadgeName + " pour un score de " + Badges_ScoreMax + " !", 1, "Nouveau badge débloqué !");
+                    createNotification("Vous venez d'acquerir le badge " + Badges_BadgeName + " pour un score de " + Badges_ScoreMax + " !", 1, "Nouveau badge dÃ©bloquÃ© !");
 
                     // En enfin, sauvegarde du badge pour l'utilisateur
                     if(datasourceBadge.applyBadge(Badges_BadgeId, 1)){

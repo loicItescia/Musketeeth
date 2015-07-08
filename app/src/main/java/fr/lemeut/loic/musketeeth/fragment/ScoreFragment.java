@@ -1,14 +1,53 @@
 package fr.lemeut.loic.musketeeth.fragment;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+import com.facebook.share.ShareApi;
+import com.facebook.share.model.SharePhoto;
+import com.facebook.share.model.SharePhotoContent;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.List;
 
 import fr.lemeut.loic.musketeeth.R;
+import fr.lemeut.loic.musketeeth.activity.MainActivity;
+import fr.lemeut.loic.musketeeth.classes.Badge;
+import fr.lemeut.loic.musketeeth.classes.GestionScore;
+import fr.lemeut.loic.musketeeth.classes.RecyclerViewAdapter;
+import fr.lemeut.loic.musketeeth.classes.ScoreRowItem;
+import fr.lemeut.loic.musketeeth.sqlbadges.Badges;
+import fr.lemeut.loic.musketeeth.sqlbadges.BadgesDataSource;
+import fr.lemeut.loic.musketeeth.sqlscorelavage.ScoreLavage;
+import fr.lemeut.loic.musketeeth.sqlscorelavage.ScoreLavageDataSource;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +68,17 @@ public class ScoreFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private  View view;
+
+    private ScoreLavageDataSource datasource;
+    String score;
+    String Ts_dateScore;
+
+    RecyclerView recyclerView;
+    ArrayList<ScoreRowItem> itemsList = new ArrayList<>();
+    RecyclerViewAdapter adapter;
+
 
     /**
      * Use this factory method to create a new instance of
@@ -59,14 +109,51 @@ public class ScoreFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_score, container, false);
+        view = inflater.inflate(R.layout.fragment_score, container, false);
+        super.onCreate(savedInstanceState);
+
+        // Affichage de la BDD dans un listView sur la home de l'application
+        datasource = new ScoreLavageDataSource(getActivity());
+        datasource.open();
+        // Recupere la liste de tous les scores
+        List<ScoreLavage> values = datasource.getAllComments();
+
+        // Fabrique des texView pour afficher les scores
+        //LinearLayout layout = new LinearLayout(getActivity());
+
+
+        // Boucle sur tous les scores
+        for (int i = 0; i < values.size(); i++) {
+
+            score = values.get(i).getscore();
+            Ts_dateScore = values.get(i).getTs_dateScore();
+
+            ScoreRowItem item = new ScoreRowItem();
+            item.setTitle(score + " points");
+            item.setDate(Ts_dateScore);
+
+            itemsList.add(item);
+        }
+
+        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        adapter = new RecyclerViewAdapter(getActivity(), itemsList);
+        recyclerView.setAdapter(adapter);
+
+        return view;
     }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

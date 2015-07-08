@@ -225,7 +225,7 @@ public class BrossageFragment extends Fragment implements SensorEventListener {
                     messageSpeed = "PLUS VITE";
                 }
 
-                // Affiche la position actuelle de la brosse a dents
+                /*// Affiche la position actuelle de la brosse a dents
                 if(last_x>6 && (last_y>-6 && last_y<6) && last_z >-3) {
                     messagePos = "DENTS DEVANT VERTICAL";
                     SCORE_DEVANT_VERTICAL += intervalleAnalysePos;
@@ -251,7 +251,7 @@ public class BrossageFragment extends Fragment implements SensorEventListener {
                 viewY.setText(Float.toString(last_y));
                 viewZ.setText(Float.toString(last_z));
                 viewSpeed.setText(speedInt.toString());
-                viewPos.setText(messagePos);
+                viewPos.setText(messagePos);*/
                 viewSpeedString.setText(messageSpeed);
             }
         }

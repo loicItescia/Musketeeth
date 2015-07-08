@@ -36,17 +36,11 @@
             android:name=".activity.AllScoresActivity"
             android:label="@string/app_name" />
 
-        <uses-permission android:name="android.permission.VIBRATE" />
-        <activity  android:name=".activity.LavageStartActivity" android:label="@string/app_name"></activity>
-        <activity  android:name=".activity.LavageEndStatsActivity" android:label="@string/app_name"></activity>
-        <activity  android:name=".activity.AllScoresActivity" android:label="@string/app_name"></activity>
-
-    </application>
-
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/title_activity_home" >
         </activity>
+
     </application>
 
 </manifest>

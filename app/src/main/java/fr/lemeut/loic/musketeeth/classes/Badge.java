@@ -18,28 +18,28 @@ public class Badge {
         int idBadge = (int) idBadgeLong;
         switch (idBadge) {
             case 0:
-                DescBadge = "Je viens de débloquer le Badge niveau 0 !";
+                DescBadge = "Je viens de dÃ©bloquer le Badge niveau 0 !";
                 break;
             case 1:
-                DescBadge = "Je viens de débloquer le Badge niveau 1 !";
+                DescBadge = "Je viens de dÃ©bloquer le Badge niveau 1 !";
                 break;
             case 2:
-                DescBadge = "Je viens de débloquer le Badge niveau 2 !";
+                DescBadge = "Je viens de dÃ©bloquer le Badge niveau 2 !";
                 break;
             case 3:
-                DescBadge = "Je viens de débloquer le Badge niveau 3 !";
+                DescBadge = "Je viens de dÃ©bloquer le Badge niveau 3 !";
                 break;
             case 4:
-                DescBadge = "Je viens de débloquer le Badge niveau 4 !";
+                DescBadge = "Je viens de dÃ©bloquer le Badge niveau 4 !";
                 break;
             case 5:
-                DescBadge = "Je viens de débloquer le Badge niveau 5 !";
+                DescBadge = "Je viens de dÃ©bloquer le Badge niveau 5 !";
                 break;
             case 6:
-                DescBadge = "Je viens de débloquer le Badge niveau 6 !";
+                DescBadge = "Je viens de dÃ©bloquer le Badge niveau 6 !";
                 break;
             case 7:
-                DescBadge = "Je viens de débloquer le Badge niveau 7 !";
+                DescBadge = "Je viens de dÃ©bloquer le Badge niveau 7 !";
                 break;
         }
         return DescBadge;

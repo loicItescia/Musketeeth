@@ -30,4 +30,7 @@ dependencies {
         transitive = true
     }
     compile 'com.facebook.android:facebook-android-sdk:4.1.0'
+    compile 'com.android.support:recyclerview-v7:21.0.+'
+    compile 'com.android.support:cardview-v7:21.0.0'
+    compile 'com.mikepenz:iconics:1.2.0@aar'
 }

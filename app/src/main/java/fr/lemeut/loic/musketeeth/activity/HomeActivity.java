@@ -3,6 +3,9 @@ package fr.lemeut.loic.musketeeth.activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 
 import android.os.Bundle;
@@ -54,7 +57,9 @@ public class HomeActivity extends AppCompatActivity implements BrossageFragment.
                         new DividerDrawerItem(),
                         new PrimaryDrawerItem().withName(R.string.title_section2),
                         new DividerDrawerItem(),
-                        new PrimaryDrawerItem().withName(R.string.title_section3)
+                        new PrimaryDrawerItem().withName(R.string.title_section3),
+                        new DividerDrawerItem(),
+                        new PrimaryDrawerItem().withName("Dev")
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
@@ -78,6 +83,12 @@ public class HomeActivity extends AppCompatActivity implements BrossageFragment.
                                 fragmentTransaction.replace(R.id.fragment_container, fragment);
 
                                 break;
+                            case 6:
+                                Intent intent = new Intent(getApplication().getApplicationContext(), MainActivity.class);
+                                startActivity(intent);
+
+
+                                break;
                             default:
                                 fragment = new BrossageFragment();
                                 fragmentTransaction.replace(R.id.fragment_container, fragment);
@@ -92,6 +103,11 @@ public class HomeActivity extends AppCompatActivity implements BrossageFragment.
                     }
                 })
                 .build();
+
+        // La suppression de la notification se fait grace a son ID
+        final NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(1);
+        notificationManager.cancel(2);
     }
 
     @Override
