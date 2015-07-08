@@ -1,4 +1,4 @@
-package fr.lemeut.loic.musketeeth.sqlscorelavage;
+package fr.lemeut.loic.musketeeth.sql.scorelavage;
 
 /**
  * Created by Loic on 03/07/2015.

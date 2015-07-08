@@ -1,4 +1,4 @@
-package fr.lemeut.loic.musketeeth.sqlbadges;
+package fr.lemeut.loic.musketeeth.sql.badges;
 
 /**
  * Created by Loic on 03/07/2015.
@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.lemeut.loic.musketeeth.sql.MySQLiteHelper;
-import fr.lemeut.loic.musketeeth.sqlscorelavage.ScoreLavage;
 
 public class BadgesDataSource {
 

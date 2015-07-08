@@ -1,4 +1,4 @@
-package fr.lemeut.loic.musketeeth.classes;
+package fr.lemeut.loic.musketeeth.listmanager.score;
 import java.util.ArrayList;
 
 

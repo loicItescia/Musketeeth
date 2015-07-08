@@ -1,6 +1,5 @@
 package fr.lemeut.loic.musketeeth.activity;
 
-import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -8,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
@@ -33,10 +31,10 @@ import java.util.List;
 import fr.lemeut.loic.musketeeth.classes.Badge;
 import fr.lemeut.loic.musketeeth.classes.GestionScore;
 import fr.lemeut.loic.musketeeth.R;
-import fr.lemeut.loic.musketeeth.sqlbadges.Badges;
-import fr.lemeut.loic.musketeeth.sqlbadges.BadgesDataSource;
-import fr.lemeut.loic.musketeeth.sqlscorelavage.ScoreLavage;
-import  fr.lemeut.loic.musketeeth.sqlscorelavage.ScoreLavageDataSource;
+import fr.lemeut.loic.musketeeth.sql.badges.Badges;
+import fr.lemeut.loic.musketeeth.sql.badges.BadgesDataSource;
+import fr.lemeut.loic.musketeeth.sql.scorelavage.ScoreLavage;
+import fr.lemeut.loic.musketeeth.sql.scorelavage.ScoreLavageDataSource;
 
 /**
  * Created by Loic on 03/07/2015.

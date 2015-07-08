@@ -14,14 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.lemeut.loic.musketeeth.R;
-import fr.lemeut.loic.musketeeth.classes.BadgeRecyclerViewAdapter;
-import fr.lemeut.loic.musketeeth.classes.BadgeRowItem;
-import fr.lemeut.loic.musketeeth.classes.ScoreRecyclerViewAdapter;
-import fr.lemeut.loic.musketeeth.classes.ScoreRowItem;
-import fr.lemeut.loic.musketeeth.sqlbadges.Badges;
-import fr.lemeut.loic.musketeeth.sqlbadges.BadgesDataSource;
-import fr.lemeut.loic.musketeeth.sqlscorelavage.ScoreLavage;
-import fr.lemeut.loic.musketeeth.sqlscorelavage.ScoreLavageDataSource;
+import fr.lemeut.loic.musketeeth.listmanager.badge.BadgeRecyclerViewAdapter;
+import fr.lemeut.loic.musketeeth.listmanager.badge.BadgeRowItem;
+import fr.lemeut.loic.musketeeth.sql.badges.Badges;
+import fr.lemeut.loic.musketeeth.sql.badges.BadgesDataSource;
 
 /**
  * A simple {@link Fragment} subclass.

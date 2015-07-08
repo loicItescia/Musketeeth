@@ -9,8 +9,8 @@ import android.view.View;
 import android.widget.Button;
 
 import fr.lemeut.loic.musketeeth.R;
-import fr.lemeut.loic.musketeeth.sqlbadges.Badges;
-import fr.lemeut.loic.musketeeth.sqlbadges.BadgesDataSource;
+import fr.lemeut.loic.musketeeth.sql.badges.Badges;
+import fr.lemeut.loic.musketeeth.sql.badges.BadgesDataSource;
 
 
 /*

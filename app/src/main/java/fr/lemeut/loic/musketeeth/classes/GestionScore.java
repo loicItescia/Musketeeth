@@ -4,8 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import java.util.List;
 
-import fr.lemeut.loic.musketeeth.sqlscorelavage.ScoreLavage;
-import fr.lemeut.loic.musketeeth.sqlscorelavage.ScoreLavageDataSource;
+import fr.lemeut.loic.musketeeth.sql.scorelavage.ScoreLavage;
+import fr.lemeut.loic.musketeeth.sql.scorelavage.ScoreLavageDataSource;
 
 /**
  * Created by Loic on 03/07/2015.
