@@ -306,7 +306,7 @@ public class LavageEndStatsActivity extends ActionBarActivity {
         final NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         //Creation de la notification avec specification de l'icone de la notification et le texte qui apparait a la creation de la notification
-        final Notification notification = new Notification(R.mipmap.ic_launcher, notificationTitle, System.currentTimeMillis());
+        final Notification notification = new Notification(R.mipmap.ic_musketeeth, notificationTitle, System.currentTimeMillis());
 
         //Definition de la redirection au moment du clic sur la notification. Dans notre cas la notification redirige vers notre application
         final PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0);
