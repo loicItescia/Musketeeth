@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,11 +14,11 @@ import com.mikepenz.iconics.IconicsDrawable;
 
 import fr.lemeut.loic.musketeeth.R;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RowViewHolder> {
+public class ScoreRecyclerViewAdapter extends RecyclerView.Adapter<ScoreRowViewHolder> {
     Context context;
     ArrayList<ScoreRowItem> itemsList;
 
-    public RecyclerViewAdapter(Context context, ArrayList<ScoreRowItem> itemsList) {
+    public ScoreRecyclerViewAdapter(Context context, ArrayList<ScoreRowItem> itemsList) {
         this.context = context;
         this.itemsList = itemsList;
     }
@@ -34,18 +33,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RowViewHolder> {
     }
 
     @Override
-    public RowViewHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
+    public ScoreRowViewHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View view = inflater.inflate(R.layout.score_row, null);
-        RowViewHolder viewHolder = new RowViewHolder(view);
+        ScoreRowViewHolder viewHolder = new ScoreRowViewHolder(view);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(RowViewHolder rowViewHolder, int position) {
+    public void onBindViewHolder(ScoreRowViewHolder scoreRowViewHolder, int position) {
         ScoreRowItem items = itemsList.get(position);
-        rowViewHolder.textView.setText(String.valueOf(items.getTitle()));
-        rowViewHolder.dateView.setText(String.valueOf(items.getDate()));
-        rowViewHolder.icon.setImageDrawable(new IconicsDrawable(context, GoogleMaterial.Icon.gmd_star).sizeDp(30));
+        scoreRowViewHolder.textView.setText(String.valueOf(items.getTitle()));
+        scoreRowViewHolder.dateView.setText(String.valueOf(items.getDate()));
+        scoreRowViewHolder.icon.setImageDrawable(new IconicsDrawable(context, GoogleMaterial.Icon.gmd_star).sizeDp(30));
     }
 }

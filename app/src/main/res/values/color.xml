@@ -3,4 +3,5 @@
     <color name="ColorPrimaryDark">#E64A19</color>
     <color name="ColorAccent">#ffe6dce2</color>
     <color name="ColorListSelected">#E64A19</color>
+    <color name="ColorDisabled">#ffbcc2c5</color>
 </resources>

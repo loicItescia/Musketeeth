@@ -23,11 +23,15 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import fr.lemeut.loic.musketeeth.R;
+import fr.lemeut.loic.musketeeth.fragment.BadgeFragment;
 import fr.lemeut.loic.musketeeth.fragment.BrossageFragment;
 import fr.lemeut.loic.musketeeth.fragment.ScoreFragment;
 
 
-public class HomeActivity extends AppCompatActivity implements BrossageFragment.OnFragmentInteractionListener, ScoreFragment.OnFragmentInteractionListener {
+public class HomeActivity extends AppCompatActivity
+        implements BrossageFragment.OnFragmentInteractionListener,
+                    ScoreFragment.OnFragmentInteractionListener,
+                    BadgeFragment.OnFragmentInteractionListener{
     private  FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
     @Override
@@ -79,7 +83,7 @@ public class HomeActivity extends AppCompatActivity implements BrossageFragment.
 
                                 break;
                             case 4:
-                                fragment = new BrossageFragment();
+                                fragment = new BadgeFragment();
                                 fragmentTransaction.replace(R.id.fragment_container, fragment);
 
                                 break;

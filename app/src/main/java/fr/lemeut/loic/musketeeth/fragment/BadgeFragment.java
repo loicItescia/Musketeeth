@@ -1,9 +1,9 @@
 package fr.lemeut.loic.musketeeth.fragment;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,20 +14,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.lemeut.loic.musketeeth.R;
+import fr.lemeut.loic.musketeeth.classes.BadgeRecyclerViewAdapter;
+import fr.lemeut.loic.musketeeth.classes.BadgeRowItem;
 import fr.lemeut.loic.musketeeth.classes.ScoreRecyclerViewAdapter;
 import fr.lemeut.loic.musketeeth.classes.ScoreRowItem;
+import fr.lemeut.loic.musketeeth.sqlbadges.Badges;
+import fr.lemeut.loic.musketeeth.sqlbadges.BadgesDataSource;
 import fr.lemeut.loic.musketeeth.sqlscorelavage.ScoreLavage;
 import fr.lemeut.loic.musketeeth.sqlscorelavage.ScoreLavageDataSource;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ScoreFragment.OnFragmentInteractionListener} interface
+ * {@link BadgeFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link ScoreFragment#newInstance} factory method to
+ * Use the {@link BadgeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ScoreFragment extends Fragment {
+public class BadgeFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -41,13 +45,14 @@ public class ScoreFragment extends Fragment {
 
     private  View view;
 
-    private ScoreLavageDataSource datasource;
-    String score;
-    String Ts_dateScore;
+    private BadgesDataSource datasource;
+    Integer score;
+    String nom;
+    Long id;
 
     RecyclerView recyclerView;
-    ArrayList<ScoreRowItem> itemsList = new ArrayList<>();
-    ScoreRecyclerViewAdapter adapter;
+    ArrayList<BadgeRowItem> itemsList = new ArrayList<>();
+    BadgeRecyclerViewAdapter adapter;
 
 
     /**
@@ -59,8 +64,8 @@ public class ScoreFragment extends Fragment {
      * @return A new instance of fragment ScoreFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ScoreFragment newInstance(String param1, String param2) {
-        ScoreFragment fragment = new ScoreFragment();
+    public static BadgeFragment newInstance(String param1, String param2) {
+        BadgeFragment fragment = new BadgeFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -68,7 +73,7 @@ public class ScoreFragment extends Fragment {
         return fragment;
     }
 
-    public ScoreFragment() {
+    public BadgeFragment() {
         // Required empty public constructor
     }
 
@@ -93,10 +98,10 @@ public class ScoreFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         // Affichage de la BDD dans un listView sur la home de l'application
-        datasource = new ScoreLavageDataSource(getActivity());
+        datasource = new BadgesDataSource(getActivity());
         datasource.open();
         // Recupere la liste de tous les scores
-        List<ScoreLavage> values = datasource.getAllComments();
+        List<Badges> values = datasource.getAllBadges();
 
         // Fabrique des texView pour afficher les scores
         //LinearLayout layout = new LinearLayout(getActivity());
@@ -105,12 +110,16 @@ public class ScoreFragment extends Fragment {
         // Boucle sur tous les scores
         for (int i = 0; i < values.size(); i++) {
 
-            score = values.get(i).getscore();
-            Ts_dateScore = values.get(i).getTs_dateScore();
+            score = values.get(i).getBadges_ScoreMax();
+            nom = values.get(i).getBadges_BadgeName();
+            id = values.get(i).getId();
+            int hasBadge = values.get(i).getBadges_HasBadge();
 
-            ScoreRowItem item = new ScoreRowItem();
-            item.setTitle(score + " points");
-            item.setDate(Ts_dateScore);
+            BadgeRowItem item = new BadgeRowItem();
+            item.setBadges_BadgeName(nom);
+            item.setBadges_ScoreMax(score);
+            item.setId(id);
+            item.setBadges_HasBadge(hasBadge);
 
             itemsList.add(item);
         }
@@ -118,7 +127,7 @@ public class ScoreFragment extends Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new ScoreRecyclerViewAdapter(getActivity(), itemsList);
+        adapter = new BadgeRecyclerViewAdapter(getActivity(), itemsList);
         recyclerView.setAdapter(adapter);
 
         return view;
