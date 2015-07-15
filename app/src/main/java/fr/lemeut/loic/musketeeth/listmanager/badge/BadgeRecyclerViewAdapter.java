@@ -1,13 +1,10 @@
-package fr.lemeut.loic.musketeeth.classes;
+package fr.lemeut.loic.musketeeth.listmanager.badge;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.mikepenz.google_material_typeface_library.GoogleMaterial;
-import com.mikepenz.iconics.IconicsDrawable;
 
 import java.util.ArrayList;
 

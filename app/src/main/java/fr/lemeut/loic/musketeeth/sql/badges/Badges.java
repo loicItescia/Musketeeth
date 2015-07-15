@@ -1,4 +1,4 @@
-package fr.lemeut.loic.musketeeth.sqlbadges;
+package fr.lemeut.loic.musketeeth.sql.badges;
 
 /**
  * Created by Loic on 06/07/2015.

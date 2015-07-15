@@ -9,16 +9,15 @@ import android.view.View;
 import android.widget.Button;
 
 import fr.lemeut.loic.musketeeth.R;
-import fr.lemeut.loic.musketeeth.services.ServiceAlarm;
-import fr.lemeut.loic.musketeeth.sqlbadges.Badges;
-import fr.lemeut.loic.musketeeth.sqlbadges.BadgesDataSource;
+import fr.lemeut.loic.musketeeth.sql.badges.Badges;
+import fr.lemeut.loic.musketeeth.sql.badges.BadgesDataSource;
 
 
 /*
  * Class MainActivity
  * Home de l'application, permet de lancer le brossage, ou de voir les scores
  */
-public class MainActivity extends Activity  {
+public class MainActivity extends Activity {
     Context _context;
 
     @Override
@@ -27,9 +26,7 @@ public class MainActivity extends Activity  {
         setContentView(R.layout.activity_main);
         _context = this;
 
-        // Lancement explicite
-        stopService(new Intent(this,ServiceAlarm.class));
-        startService(new Intent(this, ServiceAlarm.class));
+
 
         // Bouton "Voir les scores"
         Button buttonViewScores = (Button) findViewById(R.id.button6);
@@ -77,11 +74,5 @@ public class MainActivity extends Activity  {
         final NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(1);
         notificationManager.cancel(2);
-        notificationManager.cancel(5);
-        notificationManager.cancel(6);
     }
-
-
-
-
 }

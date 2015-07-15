@@ -1,4 +1,4 @@
-package fr.lemeut.loic.musketeeth.classes;
+package fr.lemeut.loic.musketeeth.listmanager.badge;
 
 /**
  * Created by vincent on 07/07/15.
