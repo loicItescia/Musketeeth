@@ -31,6 +31,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         LavageEndStatsActivity classNotif = new LavageEndStatsActivity();
 
+        // Si 9h ou 20h, on lance une notif
         if(heure== 9){
             notifDesc = "Musketeeth te demande de te laver les dents !";
             notifTitre ="Musketeeth";

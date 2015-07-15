@@ -20,10 +20,15 @@ public class ServiceAlarm extends Service {
 
 	public ServiceAlarm() {
 	}
+
 	@Override
 	public IBinder onBind(Intent intent) {
 		throw new UnsupportedOperationException("Not yet implemented");
 	}
+
+	/*
+	 * A la création, Initialisation  de l'alarmIntent.
+	 */
 	@Override
 	public void onCreate() {
 		 /* Retrieve a PendingIntent that will perform a broadcast */
@@ -48,7 +53,7 @@ public class ServiceAlarm extends Service {
 		/* Initialisation de l'alarm */
 		manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
-        /* Set the alarm to start at 10:30 AM */
+        /* Set the alarm to start at 09:00 AM */
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTimeInMillis(System.currentTimeMillis());
 		calendar.set(Calendar.HOUR_OF_DAY, 9);
@@ -61,7 +66,7 @@ public class ServiceAlarm extends Service {
 		/* Initialisation de l'alarm */
 		manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
-        /* Set the alarm to start at 10:30 AM */
+        /* Set the alarm to start at 20:00 AM */
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTimeInMillis(System.currentTimeMillis());
 		calendar.set(Calendar.HOUR_OF_DAY, 20);
@@ -71,7 +76,7 @@ public class ServiceAlarm extends Service {
 	}
 
 	public void startAlarm(Calendar calendar){
-        /* Repeating on every 20 minutes interval */
+		/* Lance l'alarme, manager.INTERVAL_DAY indique 1 fois par jours */
 		manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), manager.INTERVAL_DAY, pendingIntent);
 	}
 
