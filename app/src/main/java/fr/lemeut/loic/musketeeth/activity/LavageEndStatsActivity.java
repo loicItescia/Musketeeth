@@ -33,6 +33,7 @@ import java.util.List;
 import fr.lemeut.loic.musketeeth.classes.Badge;
 import fr.lemeut.loic.musketeeth.classes.GestionScore;
 import fr.lemeut.loic.musketeeth.R;
+import fr.lemeut.loic.musketeeth.classes.NotificationMusketeeth;
 import fr.lemeut.loic.musketeeth.sqlbadges.Badges;
 import fr.lemeut.loic.musketeeth.sqlbadges.BadgesDataSource;
 import fr.lemeut.loic.musketeeth.sqlscorelavage.ScoreLavage;
@@ -141,7 +142,11 @@ public class LavageEndStatsActivity extends ActionBarActivity {
             // Balance un toast
             Toast.makeText(getBaseContext(), "Meilleur score battu !", Toast.LENGTH_SHORT).show();
             // Balance ne notification
-            createNotification("Vous venez de dépasser votre meilleur socre !  ("+scoreCourant+") !", 2, "Meilleur score battu !");
+            String notifDesc = "Vous venez de dépasser votre meilleur socre !  ("+scoreCourant+") !";
+            String notifTitre = "Meilleur score battu !";
+            // Balance ne notification
+            NotificationMusketeeth notificationScore = new NotificationMusketeeth(2, notifDesc,  notifTitre, _context);
+            notificationScore.createNotification();
         }
     }
 
@@ -210,7 +215,7 @@ public class LavageEndStatsActivity extends ActionBarActivity {
             public void onClick(View arg0) {
                 // Publication sur Facebook
                 Badge badge = new Badge();
-                publishFaceBook("Je viens de dépasser mon meilleur score au lavage de dents ! Mon score: "+scoreCourant,  badge.getImageBadge(-1));
+                publishFaceBook("Je viens de dépasser mon meilleur score au lavage de dents ! Mon score: " + scoreCourant, badge.getImageBadge(-1));
             }
         });
 
@@ -283,8 +288,11 @@ public class LavageEndStatsActivity extends ActionBarActivity {
                 if(scoreTotal+scoreCourant > Badges_ScoreMax){
                     // Balance un toast
                     Toast.makeText(getBaseContext(), "Nouveau badge débloqué !", Toast.LENGTH_SHORT).show();
+                    String notifDesc = "Vous venez d'acquerir le badge " + Badges_BadgeName + " pour un score de " + Badges_ScoreMax + " !";
+                    String notifTitre = "Nouveau badge débloqué !";
                     // Balance ne notification
-                    createNotification("Vous venez d'acquerir le badge " + Badges_BadgeName + " pour un score de " + Badges_ScoreMax + " !", 1, "Nouveau badge débloqué !");
+                    NotificationMusketeeth notificationScore = new NotificationMusketeeth(1, notifDesc,  notifTitre, _context);
+                    notificationScore.createNotification();
 
                     // En enfin, sauvegarde du badge pour l'utilisateur
                     if(datasourceBadge.applyBadge(Badges_BadgeId, 1)){
@@ -296,25 +304,6 @@ public class LavageEndStatsActivity extends ActionBarActivity {
             }
         }
         datasourceBadge.close();
-    }
-
-    /*
-     * Creation d'une notification pour indiquer un nouveau badge
-     */
-    private final void createNotification(String notificationDesc, int idNotif, String notificationTitle) {
-        //Recuperation du notification Manager
-        final NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        //Creation de la notification avec specification de l'icone de la notification et le texte qui apparait a la creation de la notification
-        final Notification notification = new Notification(R.mipmap.ic_musketeeth, notificationTitle, System.currentTimeMillis());
-
-        //Definition de la redirection au moment du clic sur la notification. Dans notre cas la notification redirige vers notre application
-        final PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0);
-
-        //Notification & Vibration
-        notification.setLatestEventInfo(this, notificationTitle, notificationDesc, pendingIntent);
-        notification.vibrate = new long[]{0, 200, 100, 200, 100, 200};
-        notificationManager.notify(idNotif, notification);
     }
 
 
